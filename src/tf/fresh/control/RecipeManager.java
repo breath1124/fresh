@@ -154,6 +154,7 @@ public class RecipeManager {
 		// TODO Auto-generated method stub
 		BeanRecipe recipe = new BeanRecipe();
 		int id = 0;
+		int id2 = 0;
 		Connection conn = null;
 		try {
 			conn=DBUtil.getConnection();
@@ -168,7 +169,16 @@ public class RecipeManager {
 				throw new BaseException("没有此菜谱");
 			pst.close();
 			rs.close();
-			
+			sql = "SELECT recipe FROM fresh_recrecp WHERE recipe_id = ?";
+			pst = conn.prepareStatement(sql);
+			pst.setInt(1, id);
+			rs = pst.executeQuery();
+			if(rs.next())
+				id2 = rs.getInt(1);
+			if(id2 > 0)
+				throw new BaseException("菜谱推荐中有此菜谱，请先删除相应的菜谱推荐");   //这里是无法删除还是连同推荐一起删除还没想好，后期再改
+			pst.close();
+			rs.close();
 			//图片还没加，后期有空加
 			sql = "DELETE FROM fresh_recipe WHERE recipe_name = ?";
 			pst = conn.prepareStatement(sql);

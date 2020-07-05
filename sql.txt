@@ -1,0 +1,287 @@
+drop table if exists fresh_admin;
+
+drop table if exists fresh_discounts;
+
+drop table if exists fresh_distriAddr;
+
+drop table if exists fresh_fullDiscounts_info;
+
+drop table if exists fresh_fullRelation_goods;
+
+drop table if exists fresh_goods;
+
+drop table if exists fresh_goods_buy;
+
+drop table if exists fresh_goods_remark;
+
+drop table if exists fresh_limitTime_discounts;
+
+drop table if exists fresh_order;
+
+drop table if exists fresh_order_detail;
+
+drop table if exists fresh_recRecp;
+
+drop table if exists fresh_recipe;
+
+drop table if exists fresh_sort;
+
+drop table if exists fresh_usr;
+
+/*==============================================================*/
+/* Table: fresh_admin                                           */
+/*==============================================================*/
+create table fresh_admin
+(
+   staff_id             varchar(20) not null,
+   staff_name           varchar(20),
+   admin_pwd            varchar(20),
+   primary key (staff_id)
+);
+
+/*==============================================================*/
+/* Table: fresh_discounts                                       */
+/*==============================================================*/
+create table fresh_discounts
+(
+   discnt_id            int not null auto_increment,
+   discnt_detail        varchar(100),
+   discnt_suitMoney     decimal(15,2),
+   discnt_minuMoney     decimal(15,2),
+   discnt_begin         date,
+   discnt_end           date,
+   primary key (discnt_id)
+);
+
+/*==============================================================*/
+/* Table: fresh_distriAddr                                      */
+/*==============================================================*/
+create table fresh_distriAddr
+(
+   addr_id              int not null auto_increment,
+   usr_id               varchar(20),
+   province             varchar(10),
+   city                 varchar(10),
+   district             varchar(10),
+   addr                 varchar(50),
+   usr_name             varchar(20),
+   usr_tel              varchar(20),
+   primary key (addr_id)
+);
+
+/*==============================================================*/
+/* Table: fresh_fullDiscounts_info                              */
+/*==============================================================*/
+create table fresh_fullDiscounts_info
+(
+   full_id              int not null auto_increment,
+   full_detail          varchar(100),
+   full_suitCnt         int,
+   full_disCnt          decimal(15,2),
+   full_begin           date,
+   full_end             date,
+   primary key (full_id)
+);
+
+/*==============================================================*/
+/* Table: fresh_fullRelation_goods                              */
+/*==============================================================*/
+create table fresh_fullRelation_goods
+(
+   full_id              int not null,
+   goods_id             int not null,
+   discnt_begin         date,
+   discnt_end           date,
+   primary key (full_id, goods_id)
+);
+
+/*==============================================================*/
+/* Table: fresh_goods                                           */
+/*==============================================================*/
+create table fresh_goods
+(
+   goods_id             int not null,
+   category_id          int,
+   goods_name           varchar(30),
+   goods_price          decimal(15,2),
+   goods_vipPrice       decimal(15,2),
+   goods_count          int,
+   goods_spec           varchar(50),
+   good_detail          varchar(100),
+   primary key (goods_id)
+);
+
+/*==============================================================*/
+/* Table: fresh_goods_buy                                       */
+/*==============================================================*/
+create table fresh_goods_buy
+(
+   buy_id               int not null auto_increment,
+   staff_id             varchar(20),
+   goods_id             int,
+   buy_cnt              int,
+   buy_state            varchar(10),
+   primary key (buy_id)
+);
+
+/*==============================================================*/
+/* Table: fresh_goods_remark                                    */
+/*==============================================================*/
+create table fresh_goods_remark
+(
+   usr_id               varchar(20) not null,
+   order_id             int not null,
+   remark_detail        varchar(100),
+   remark_date          date,
+   remark_star          varchar(10),
+   remark_picture       longblob,
+   primary key (usr_id, order_id)
+);
+
+/*==============================================================*/
+/* Table: fresh_limitTime_discounts                             */
+/*==============================================================*/
+create table fresh_limitTime_discounts
+(
+   promotion_id         int not null auto_increment,
+   goods_id             int,
+   promotion_price      decimal(15,2),
+   promotion_cnt        int,
+   promotion_begin      date,
+   promotion_end        date,
+   primary key (promotion_id)
+);
+
+/*==============================================================*/
+/* Table: fresh_order                                           */
+/*==============================================================*/
+create table fresh_order
+(
+   order_id             int not null auto_increment,
+   discnt_id            int,
+   addr_id              int,
+   usr_id               varchar(20),
+   init_money           decimal(15,2),
+   final_meney          decimal(15,2),
+   deliver_time         date,
+   order_state          varchar(20),
+   primary key (order_id)
+);
+
+/*==============================================================*/
+/* Table: fresh_order_detail                                    */
+/*==============================================================*/
+create table fresh_order_detail
+(
+   goods_id             int not null,
+   order_id             int not null,
+   full_id              int not null,
+   goods_cnt            int,
+   goods_price          decimal(15,2),
+   full_discnt          decimal(15,2),
+   primary key (goods_id, order_id, full_id)
+);
+
+/*==============================================================*/
+/* Table: fresh_recRecp                                         */
+/*==============================================================*/
+create table fresh_recRecp
+(
+   recipe_id            int not null,
+   goods_id             int not null,
+   recpie_detail        varchar(100),
+   primary key (recipe_id, goods_id)
+);
+
+/*==============================================================*/
+/* Table: fresh_recipe                                          */
+/*==============================================================*/
+create table fresh_recipe
+(
+   recipe_id            int not null auto_increment,
+   recipe_name          varchar(30),
+   recipe_materials     varchar(50),
+   recipe_step          varchar(50),
+   recipe_picture       longblob,
+   primary key (recipe_id)
+);
+
+/*==============================================================*/
+/* Table: fresh_sort                                            */
+/*==============================================================*/
+create table fresh_sort
+(
+   category_id          int not null auto_increment,
+   category_name        varchar(30),
+   category_detail      varchar(100),
+   primary key (category_id)
+);
+
+/*==============================================================*/
+/* Table: fresh_usr                                             */
+/*==============================================================*/
+create table fresh_usr
+(
+   usr_id               varchar(20) not null,
+   usr_name             varchar(20),
+   usr_sex              varchar(5),
+   usr_pwd              varchar(20),
+   usr_tel              varchar(20),
+   usr_email            varchar(30),
+   usr_city             varchar(20),
+   usr_registerTime     date,
+   usr_isVIP            varchar(10),
+   usr_vipDDL           date,
+   primary key (usr_id)
+);
+
+alter table fresh_distriAddr add constraint FK_fresh_usrAddr foreign key (usr_id)
+      references fresh_usr (usr_id) on delete restrict on update restrict;
+
+alter table fresh_fullRelation_goods add constraint FK_fresh_fullRelation_goods foreign key (full_id)
+      references fresh_fullDiscounts_info (full_id) on delete restrict on update restrict;
+
+alter table fresh_fullRelation_goods add constraint FK_fresh_fullRelation_goods2 foreign key (goods_id)
+      references fresh_goods (goods_id) on delete restrict on update restrict;
+
+alter table fresh_goods add constraint FK_fresh_goodsSort foreign key (category_id)
+      references fresh_sort (category_id) on delete restrict on update restrict;
+
+alter table fresh_goods_buy add constraint FK_fresh_adminBuy foreign key (staff_id)
+      references fresh_admin (staff_id) on delete restrict on update restrict;
+
+alter table fresh_goods_buy add constraint FK_fresh_buyGoods foreign key (goods_id)
+      references fresh_goods (goods_id) on delete restrict on update restrict;
+
+alter table fresh_goods_remark add constraint FK_fresh_goods_remark foreign key (usr_id)
+      references fresh_usr (usr_id) on delete restrict on update restrict;
+
+alter table fresh_goods_remark add constraint FK_fresh_goods_remark2 foreign key (order_id)
+      references fresh_order (order_id) on delete restrict on update restrict;
+
+alter table fresh_limitTime_discounts add constraint FK_fresh_goodsDiscounts foreign key (goods_id)
+      references fresh_goods (goods_id) on delete restrict on update restrict;
+
+alter table fresh_order add constraint FK_fresh_addr foreign key (addr_id)
+      references fresh_distriAddr (addr_id) on delete restrict on update restrict;
+
+alter table fresh_order add constraint FK_fresh_discountsMoney foreign key (discnt_id)
+      references fresh_discounts (discnt_id) on delete restrict on update restrict;
+
+alter table fresh_order add constraint FK_fresh_usrOrder foreign key (usr_id)
+      references fresh_usr (usr_id) on delete restrict on update restrict;
+
+alter table fresh_order_detail add constraint FK_fresh_order_detail foreign key (goods_id)
+      references fresh_goods (goods_id) on delete restrict on update restrict;
+
+alter table fresh_order_detail add constraint FK_fresh_order_detail2 foreign key (order_id)
+      references fresh_order (order_id) on delete restrict on update restrict;
+
+alter table fresh_order_detail add constraint FK_fresh_order_detail3 foreign key (full_id)
+      references fresh_fullDiscounts_info (full_id) on delete restrict on update restrict;
+
+alter table fresh_recRecp add constraint FK_fresh_recRecp foreign key (recipe_id)
+      references fresh_recipe (recipe_id) on delete restrict on update restrict;
+
+alter table fresh_recRecp add constraint FK_fresh_recRecp2 foreign key (goods_id)
+      references fresh_goods (goods_id) on delete restrict on update restrict;

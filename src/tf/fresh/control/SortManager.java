@@ -20,9 +20,8 @@ public class SortManager {
 	
 	public static void main(String[] args) throws BaseException {
 		// TODO Auto-generated method stub
-		RecipeManager recipe = new RecipeManager();
-		System.out.println(recipe.find("Õ¡∂πÀø").getRecipe_materials());
-		System.out.println("‘À––");
+		DiscountsManager x = new DiscountsManager();
+		x.add("test", 10.1, 0.3, "2020-1-1", "2020-12-31");
 	}
 	
 	public BeanSort add_sort(String name, String detail) throws BaseException {
